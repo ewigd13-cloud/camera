@@ -5,8 +5,8 @@ const urlsToCache = [
   '/camera/index.html',
   '/camera/manifest.json',
   '/camera/service-worker.js',
-  '/camera/assets/index-CbQMubP8.js', // ビルド後の正確なJSファイル名
-  '/camera/assets/index-B0PFTnep.css' // ビルド後の正確なCSSファイル名
+  '/camera/assets/index-CZnnQwuT.js', // ビルド後の正確なJSファイル名
+  '/camera/assets/index-YAagy2kd.css' // ビルド後の正確なCSSファイル名
   '/camera/icons/icon-192x192.png' 
   // 外部URLは除外済み
 ];
