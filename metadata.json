@@ -1,7 +1,0 @@
-{
-  "name": "Whiteboard Photo Booth",
-  "description": "A fun photo booth application that lets you take a picture and overlay it with a message written on an editable whiteboard.",
-  "requestFramePermissions": [
-    "camera"
-  ]
-}
