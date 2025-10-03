@@ -6,8 +6,8 @@
     <title>Whiteboard Photo Booth</title>
     <meta name="theme-color" content="#4a5568" />
     <link rel="manifest" href="/camera/manifest.json" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet" />
     <style>
       html, body {
         margin: 0;
@@ -47,7 +47,10 @@
   </head>
   <body>
     <div id="root"></div>
-
+
+    <!-- ✅ Viteビルド後のJSを読み込む -->
+
+    <!-- ✅ Service Worker登録 -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
