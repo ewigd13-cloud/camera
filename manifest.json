@@ -4,26 +4,26 @@
   "description": "A fun photo booth application that lets you take a picture and overlay it with a message written on an editable whiteboard.",
   "icons": [
     {
-      "src": "icons/icon-192x192.png",
+      "src": "icons/icon-192.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-512x512.png",
+      "src": "icons/icon-512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
-  "id": "/",
+  "start_url": "/camera/",
+  "id": "/camera/",
   "display": "standalone",
   "display_override": [
     "window-controls-overlay",
     "standalone"
   ],
-  "scope": ".",
+  "scope": "/camera/",
   "background_color": "#2d3748",
   "theme_color": "#4a5568"
 }
