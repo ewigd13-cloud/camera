@@ -2,25 +2,17 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Whiteboard Photo Booth</title>
     <meta name="theme-color" content="#4a5568" />
-    <link rel="manifest" href="/camera/manifest.json" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>" />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>">
+    <link rel="stylesheet" href="/index.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        width: 100vw;
-        background-color: #000;
+      body {
         font-family: 'Noto Serif JP', serif;
-        overflow: hidden;
-      }
-      #root {
-        height: 100%;
-        width: 100%;
       }
       .font-marker {
         font-weight: 900;
@@ -42,19 +34,14 @@
         opacity: 0.8;
       }
     </style>
-    <script type="module" crossorigin src="/camera/assets/index-CJtWYhUD.js"></script>
-    <link rel="stylesheet" crossorigin href="/camera/assets/index-AHB0zymC.css">
+    <script type="module" crossorigin src="/assets/index-DS-w590W.js"></script>
   </head>
   <body>
-    <div id="root"></div>
-
-    <!-- ✅ Viteビルド後のJSを読み込む -->
-
-    <!-- ✅ Service Worker登録 -->
+    <div id="root"></div>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/camera/service-worker.js')
+          navigator.serviceWorker.register('/service-worker.js')
             .then(reg => console.log('SW registered:', reg.scope))
             .catch(err => console.error('SW registration failed:', err));
         });
