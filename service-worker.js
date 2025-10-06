@@ -6,7 +6,7 @@ const urlsToCache = [
   '/icon-192.png',
   '/icon-512.png',
   '/fonts/NotoSerifJP.woff2',
-  '/assets/index-XXXX.js' // ← vite build後のJSファイル名に合わせて更新
+  '/assets/index-DPAdtAQ6.js' // ← vite build後のJSファイル名に合わせて更新
 ];
 
 self.addEventListener('install', event => {

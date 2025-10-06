@@ -2,46 +2,56 @@
 @tailwind components;
 @tailwind utilities;
 
+/* フォント定義 */
+@font-face {
+  font-family: 'Noto Serif JP';
+  src: url('/fonts/NotoSerifJP.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ベースリセット */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Noto Serif JP', serif;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+    height: 100vh;
+    width: 100vw;
+    overflow: auto; /* ✅ hidden → auto に変更 */
+  }
+
+  #root {
+    height: 100vh;
+    width: 100vw;
+    padding: 0;
+    margin: 0;
+  }
 }
 
-/* フォントと背景 */
-body {
-  font-family: 'Noto Serif JP', serif;
-  background-color: #f9f9f9;
-  color: #333;
-  line-height: 1.6;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-}
-
-/* ルート要素 */
-#root {
-  height: 100vh;
-  width: 100vw;
-  padding: 0;
-  margin: 0;
-}
-
-/* カウントダウン演出 */
-.countdown-overlay {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 15rem;
-  font-weight: 700;
-  font-family: sans-serif;
-  -webkit-text-stroke: 4px black;
-  text-stroke: 4px black;
-  z-index: 10;
-  pointer-events: none;
-  opacity: 0.8;
+/* カスタム演出 */
+@layer components {
+  .countdown-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 15rem;
+    font-weight: 700;
+    font-family: sans-serif;
+    -webkit-text-stroke: 4px black; /* ✅ text-stroke は削除 */
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0.8;
+  }
 }
