@@ -1,14 +1,10 @@
 const CACHE_NAME = 'whiteboard-photo-booth-v2';
 const urlsToCache = [
-  '.',
-  './index.html',
-  './manifest.json',
-  './index.tsx',
-  './App.tsx',
-  './components/CameraView.tsx',
-  './components/ChalkboardInput.tsx',
-  './components/Icons.tsx',
-  'https://cdn.tailwindcss.com',
+  self.location.origin + '/camera/',
+  self.location.origin + '/camera/index.html',
+  self.location.origin + '/camera/manifest.json',
+  self.location.origin + '/camera/assets/index-xxxxx.js', // 実際のファイル名に置き換える
+  self.location.origin + '/camera/assets/index-xxxxx.css',
   'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap'
 ];
 
@@ -29,7 +25,7 @@ self.addEventListener('activate', event => {
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
+          if (!cacheWhitelist.includes(cacheName)) {
             return caches.delete(cacheName);
           }
         })
@@ -39,38 +35,23 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') {
-    return;
-  }
+  if (event.request.method !== 'GET') return;
 
   event.respondWith(
     caches.open(CACHE_NAME).then(cache => {
       return cache.match(event.request).then(response => {
-        // Return response from cache if available
-        if (response) {
-          return response;
-        }
+        if (response) return response;
 
-        // Otherwise, fetch from network, cache it, and return it
         return fetch(event.request).then(networkResponse => {
-          // Check if we received a valid response
-          if(!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic' && networkResponse.type !== 'cors') {
-              return networkResponse;
+          if (!networkResponse || networkResponse.status !== 200 || !['basic', 'cors'].includes(networkResponse.type)) {
+            return networkResponse;
           }
 
-          // IMPORTANT: Clone the response. A response is a stream
-          // and because we want the browser to consume the response
-          // as well as the cache consuming the response, we need
-          // to clone it so we have two streams.
           const responseToCache = networkResponse.clone();
-
           cache.put(event.request, responseToCache);
-          
           return networkResponse;
         }).catch(err => {
-            console.error('Fetch failed; returning offline page instead.', err);
-            // If the fetch fails, you might want to return a fallback page.
-            // For this app, if the initial assets are cached, it should work.
+          console.error('Fetch failed; returning offline fallback if available.', err);
         });
       });
     })
