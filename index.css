@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ベースリセット */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* フォントと背景 */
+body {
+  font-family: 'Noto Serif JP', serif;
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.6;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* ルート要素 */
+#root {
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+}
+
+/* カウントダウン演出 */
+.countdown-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 15rem;
+  font-weight: 700;
+  font-family: sans-serif;
+  -webkit-text-stroke: 4px black;
+  text-stroke: 4px black;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.8;
+}

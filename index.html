@@ -6,35 +6,10 @@
     <title>Whiteboard Photo Booth</title>
     <meta name="theme-color" content="#4a5568" />
     <link rel="manifest" href="/camera/manifest.json" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>">
-    <link rel="stylesheet" href="/index.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      body {
-        font-family: 'Noto Serif JP', serif;
-      }
-      .font-marker {
-        font-weight: 900;
-      }
-      .countdown-overlay {
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        font-size: 15rem;
-        font-weight: 700;
-        font-family: sans-serif;
-        -webkit-text-stroke: 4px black;
-        text-stroke: 4px black;
-        z-index: 10;
-        pointer-events: none;
-        opacity: 0.8;
-      }
-    </style>
-    <script type="module" crossorigin src="/camera/assets/index-DS-w590W.js"></script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>" />
+    <link rel="stylesheet" href="/camera/index.css" /> <!-- ✅ ローカルCSS -->
+    <link rel="preload" href="/fonts/NotoSerifJP.woff2" as="font" type="font/woff2" crossorigin /> <!-- ✅ ローカルフォント -->
+    <script type="module" crossorigin src="/camera/assets/index-DPAdtAQ6.js"></script>
   </head>
   <body>
     <div id="root"></div>
