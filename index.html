@@ -5,31 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Whiteboard Photo Booth</title>
     <meta name="theme-color" content="#4a5568" />
-
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/camera/manifest.webmanifest" />
-
-    <!-- Favicon -->
+    <link rel="manifest" href="/camera/manifest.json" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>">
-
-    <!-- フォント設定（CSSに統合済み） -->
+    <link rel="stylesheet" href="/index.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
       body {
         font-family: 'Noto Serif JP', serif;
-        background-color: #f9f9f9;
-        color: #333;
-        line-height: 1.6;
-        height: 100vh;
-        width: 100vw;
-        overflow: hidden;
+      }
+      .font-marker {
+        font-weight: 900;
+      }
+      .countdown-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 15rem;
+        font-weight: 700;
+        font-family: sans-serif;
+        -webkit-text-stroke: 4px black;
+        text-stroke: 4px black;
+        z-index: 10;
+        pointer-events: none;
+        opacity: 0.8;
       }
     </style>
-    <script type="module" crossorigin src="/camera/assets/index-BVYKaXUd.js"></script>
-    <link rel="stylesheet" crossorigin href="/camera/assets/index-CTSoWR9A.css">
-  <link rel="manifest" href="/camera/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/camera/registerSW.js"></script></head>
+    <script type="module" crossorigin src="/camera/assets/index-DS-w590W.js"></script>
+  </head>
   <body>
-    <div id="root"></div>
-
-    <!-- ✅ ViteがJSエントリを検出できるようにする -->
+    <div id="root"></div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(reg => console.log('SW registered:', reg.scope))
+            .catch(err => console.error('SW registration failed:', err));
+        });
+      }
+    </script>
   </body>
 </html>
