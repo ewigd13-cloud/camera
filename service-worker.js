@@ -3,7 +3,7 @@ const urlsToCache = [
   self.location.origin + '/camera/',
   self.location.origin + '/camera/index.html',
   self.location.origin + '/camera/manifest.json',
-  self.location.origin + '/camera/assets/index-Co7rOBCp.js', // 実際のファイル名に置き換える
+  self.location.origin + '/camera/assets/index--DJ-73WN.js', // 実際のファイル名に置き換える
   self.location.origin + '/camera/assets/index-CTSoWR9A.css',
   'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap'
 ];
