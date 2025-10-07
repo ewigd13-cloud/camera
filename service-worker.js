@@ -6,8 +6,9 @@ const urlsToCache = [
   self.location.origin + '/camera/assets/index-CTSoWR9A.css',
   self.location.origin + '/camera/icons/icon-192.png',
   self.location.origin + '/camera/icons/icon-512.png',
-  'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap',
+  self.location.origin + '/camera/fonts/NotoSerifJP-VariableFont_wght.ttf', // ← ローカルフォント
 ];
+
 
 // インストール時にキャッシュ登録
 self.addEventListener('install', event => {
@@ -76,7 +77,7 @@ self.addEventListener('fetch', event => {
           return networkResponse;
         }).catch(err => {
           console.error('Fetch failed:', err);
-          return caches.match(self.location.origin + '/camera/index.html');
+          return caches.match(self.location.origin + '/camera/');
         });
       });
     })
