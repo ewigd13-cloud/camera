@@ -6,9 +6,8 @@ const urlsToCache = [
   self.location.origin + '/camera/assets/index-CqfW5-qc.css',
   self.location.origin + '/camera/icons/icon-192.png',
   self.location.origin + '/camera/icons/icon-512.png',
-  self.location.origin + '/camera/fonts/NotoSerifJP-VariableFont_wght.ttf', // ← ローカルフォント
+  self.location.origin + '/camera/fonts/NotoSerifJP-VariableFont_wght.ttf',
 ];
-
 
 // インストール時にキャッシュ登録
 self.addEventListener('install', event => {
@@ -48,14 +47,27 @@ self.addEventListener('fetch', event => {
 
   // ページ遷移（navigate）は index.html を返す
   if (event.request.mode === 'navigate') {
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || caches.match(self.location.origin + '/camera/');
-    }).catch(() => caches.match(self.location.origin + '/camera/'))
-  );
-  return;
-}
-
+    event.respondWith(
+      caches.match(event.request).then(response => {
+        if (response) return response;
+        return caches.match(self.location.origin + '/camera/').then(fallback => {
+          if (fallback) return fallback;
+          return new Response('Offline fallback', {
+            status: 408,
+            statusText: 'Offline',
+            headers: { 'Content-Type': 'text/plain' },
+          });
+        });
+      }).catch(() => {
+        return new Response('Offline fallback', {
+          status: 408,
+          statusText: 'Offline',
+          headers: { 'Content-Type': 'text/plain' },
+        });
+      })
+    );
+    return;
+  }
 
   // 通常のリソース取得（JS/CSS/画像など）
   event.respondWith(
@@ -76,13 +88,17 @@ self.addEventListener('fetch', event => {
           cache.put(event.request, responseToCache);
           return networkResponse;
         }).catch(err => {
-  console.error('Fetch failed:', err);
-  return caches.match(self.location.origin + '/camera/').then(fallback => {
-    if (fallback) return fallback;
-    return new Response('Offline fallback', {
-      status: 408,
-      statusText: 'Network error',
-      headers: { 'Content-Type': 'text/plain' },
-    });
-  });
+          console.error('Fetch failed:', err);
+          return caches.match(self.location.origin + '/camera/').then(fallback => {
+            if (fallback) return fallback;
+            return new Response('Offline fallback', {
+              status: 408,
+              statusText: 'Network error',
+              headers: { 'Content-Type': 'text/plain' },
+            });
+          });
+        });
+      });
+    })
+  );
 });
