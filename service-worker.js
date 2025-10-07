@@ -7,7 +7,7 @@ const urlsToCache = [
   self.location.origin + '/camera/assets/index-CTSoWR9A.css',
   self.location.origin + '/camera/icons/icon-192.png',
   self.location.origin + '/camera/icons/icon-512.png',
-  // Google Fonts は CORS制限や no-store の可能性があるため除外
+  'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap',
 ];
 
 // インストール時にキャッシュ登録
@@ -19,48 +19,50 @@ self.addEventListener('install', event => {
         console.log('Opened cache');
         return cache.addAll(urlsToCache);
       })
-      .then(() => {
-        console.log('Cache addAll succeeded');
-      })
       .catch(err => {
         console.error('Cache addAll failed:', err);
       })
   );
 });
 
-// アクティベート時に古いキャッシュを完全削除＋即時制御
+// アクティベート時に古いキャッシュ削除＋即時制御
 self.addEventListener('activate', event => {
+  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
-    caches.keys().then(cacheNames =>
-      Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)))
-    )
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (!cacheWhitelist.includes(cacheName)) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
   );
   self.clients.claim();
 });
 
-// フェッチ時の分岐：navigateは index.html、それ以外はキャッシュ優先＋精密なフォールバック
+// フェッチ時の分岐：navigateは index.html、それ以外はキャッシュ優先
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
-  // ✅ 不要な外部API呼び出しを無視（ip2location系）
-  if (event.request.url.includes('ip2location-mcc.com')) return;
-
-  // ページ遷移時は index.html を返す
+  // ページ遷移（navigate）は index.html を返す
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      caches.match(event.request).then(response => {
-        return response || fetch(event.request).catch(() =>
-          caches.match(self.location.origin + '/camera/index.html')
-        );
-      })
+      caches.match(self.location.origin + '/camera/index.html')
+        .then(response => response || fetch(event.request))
+        .catch(err => {
+          console.error('Navigation fetch failed:', err);
+          return caches.match(self.location.origin + '/camera/index.html');
+        })
     );
     return;
   }
 
   // 通常のリソース取得（JS/CSS/画像など）
   event.respondWith(
-    caches.open(CACHE_NAME).then(cache =>
-      cache.match(event.request).then(response => {
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.match(event.request).then(response => {
         if (response) return response;
 
         return fetch(event.request).then(networkResponse => {
@@ -75,12 +77,11 @@ self.addEventListener('fetch', event => {
           const responseToCache = networkResponse.clone();
           cache.put(event.request, responseToCache);
           return networkResponse;
-        }).catch(() =>
-          caches.match(event.request).then(fallback =>
-            fallback || caches.match(self.location.origin + '/camera/index.html')
-          )
-        );
-      })
-    )
+        }).catch(err => {
+          console.error('Fetch failed:', err);
+          return caches.match(self.location.origin + '/camera/index.html');
+        });
+      });
+    })
   );
 });
