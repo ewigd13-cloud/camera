@@ -7,7 +7,10 @@ const urlsToCache = [
   self.location.origin + '/camera/assets/index-CTSoWR9A.css',
   self.location.origin + '/camera/icons/icon-192.png',
   self.location.origin + '/camera/icons/icon-512.png',
-  'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap'
+  'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap',
+  'https://fonts.gstatic.com/s/notoserifjp/vXX/font1.woff2', // ✅ Networkログで確認したURL
+  'https://fonts.gstatic.com/s/notoserifjp/vXX/font2.woff2'
+
 ];
 
 // インストール時にキャッシュ登録
