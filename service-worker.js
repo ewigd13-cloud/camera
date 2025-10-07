@@ -6,6 +6,9 @@ const urlsToCache = [
   self.location.origin + '/camera/assets/index-Co7rOBCp.js', // ← dist/assets にある正確なファイル名
   self.location.origin + '/camera/assets/index-CTSoWR9A.css',
   'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap'
+  'https://fonts.gstatic.com/s/notoserifjp/vXX/font1.woff2', // ✅ Networkログで確認したURL
+  'https://fonts.gstatic.com/s/notoserifjp/vXX/font2.woff2'
+
 ];
 
 // インストール時にキャッシュ登録
