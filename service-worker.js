@@ -28,19 +28,12 @@ self.addEventListener('install', event => {
   );
 });
 
-// アクティベート時に古いキャッシュ削除＋即時制御
+// アクティベート時に古いキャッシュを完全削除＋即時制御
 self.addEventListener('activate', event => {
-  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (!cacheWhitelist.includes(cacheName)) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    caches.keys().then(cacheNames =>
+      Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)))
+    )
   );
   self.clients.claim();
 });
@@ -50,27 +43,24 @@ self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
   // ✅ 不要な外部API呼び出しを無視（ip2location系）
-  if (event.request.url.includes('ip2location-mcc.com')) {
-    return;
-  }
+  if (event.request.url.includes('ip2location-mcc.com')) return;
 
   // ページ遷移時は index.html を返す
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      caches.match(self.location.origin + '/camera/index.html')
-        .then(response => response || fetch(event.request))
-        .catch(err => {
-          console.error('Navigation fetch failed:', err);
-          return caches.match(self.location.origin + '/camera/index.html');
-        })
+      caches.match(event.request).then(response => {
+        return response || fetch(event.request).catch(() =>
+          caches.match(self.location.origin + '/camera/index.html')
+        );
+      })
     );
     return;
   }
 
   // 通常のリソース取得（JS/CSS/画像など）
   event.respondWith(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.match(event.request).then(response => {
+    caches.open(CACHE_NAME).then(cache =>
+      cache.match(event.request).then(response => {
         if (response) return response;
 
         return fetch(event.request).then(networkResponse => {
@@ -85,19 +75,12 @@ self.addEventListener('fetch', event => {
           const responseToCache = networkResponse.clone();
           cache.put(event.request, responseToCache);
           return networkResponse;
-        }).catch(err => {
-          console.error('Fetch failed:', err);
-
-          // destination による精密な分岐
-          if (['script', 'style', 'image', 'font'].includes(event.request.destination)) {
-            return new Response('', { status: 404 });
-          }
-
-          return caches.match(event.request).then(fallback => {
-           return fallback || caches.match(self.location.origin + '/camera/index.html');
-         });
-
-      });
-    })
+        }).catch(() =>
+          caches.match(event.request).then(fallback =>
+            fallback || caches.match(self.location.origin + '/camera/index.html')
+          )
+        );
+      })
+    )
   );
 });
