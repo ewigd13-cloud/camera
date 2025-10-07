@@ -46,7 +46,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
-  // ページ遷移（navigate）は index.html を返す
+  // ページ遷移時だけ index.html を返す
   if (event.request.mode === 'navigate') {
     event.respondWith(
       caches.match(self.location.origin + '/camera/index.html')
@@ -79,7 +79,7 @@ self.addEventListener('fetch', event => {
           return networkResponse;
         }).catch(err => {
           console.error('Fetch failed:', err);
-          return caches.match(self.location.origin + '/camera/index.html');
+          return new Response('', { status: 404 }); // JS/CSSには index.html を返さない
         });
       });
     })
