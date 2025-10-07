@@ -7,15 +7,36 @@
     <meta name="theme-color" content="#4a5568" />
     <link rel="manifest" href="/camera/manifest.json" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>" />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      body {
-        font-family: 'Noto Serif JP', serif;
+      @font-face {
+        font-family: 'Noto Serif JP';
+        src: url('/camera/fonts/NotoSerifJP-VariableFont_wght.ttf') format('truetype');
+        font-weight: 400 900;
+        font-style: normal;
       }
+
+      body {
+        font-family: 'Noto Serif JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+        line-height: 1.6;
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+      }
+
+      #root {
+        height: 100vh;
+        width: 100vw;
+      }
+
       .font-marker {
         font-weight: 900;
       }
+
       .countdown-overlay {
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
@@ -33,12 +54,13 @@
         opacity: 0.8;
       }
     </style>
-    <script type="module" crossorigin src="/camera/assets/index-bHxpedO3.js"></script>
-    <link rel="stylesheet" crossorigin href="/camera/assets/index-DaguZs9r.css">
   </head>
   <body>
     <div id="root"></div>
-     </div>
+
+    <!-- Viteが自動で挿入するJSを使うため、手動でsrc/index.tsxは書かない -->
+    <!-- Vite build後に dist/index.html に自動挿入される script を使う -->
+
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
