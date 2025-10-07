@@ -3,19 +3,16 @@ const urlsToCache = [
   self.location.origin + '/camera/',
   self.location.origin + '/camera/index.html',
   self.location.origin + '/camera/manifest.json',
-  self.location.origin + '/camera/assets/index--DJ-73WN.js', // ← dist/assets にある正確なファイル名
+  self.location.origin + '/camera/assets/index--DJ-73WN.js',
   self.location.origin + '/camera/assets/index-CTSoWR9A.css',
   self.location.origin + '/camera/icons/icon-192.png',
   self.location.origin + '/camera/icons/icon-512.png',
   'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap',
-  'https://fonts.gstatic.com/s/notoserifjp/vXX/font1.woff2', // ✅ Networkログで確認したURL
-  'https://fonts.gstatic.com/s/notoserifjp/vXX/font2.woff2'
-
 ];
 
 // インストール時にキャッシュ登録
 self.addEventListener('install', event => {
-  self.skipWaiting(); // 即時有効化
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
@@ -42,13 +39,27 @@ self.addEventListener('activate', event => {
       );
     })
   );
-  self.clients.claim(); // ページを即座に制御
+  self.clients.claim();
 });
 
-// フェッチ時にキャッシュ優先＋ネットフォールバック＋index.html返却
+// フェッチ時の分岐：navigateは index.html、それ以外はキャッシュ優先
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
+  // ページ遷移（navigate）は index.html を返す
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      caches.match(self.location.origin + '/camera/index.html')
+        .then(response => response || fetch(event.request))
+        .catch(err => {
+          console.error('Navigation fetch failed:', err);
+          return caches.match(self.location.origin + '/camera/index.html');
+        })
+    );
+    return;
+  }
+
+  // 通常のリソース取得（JS/CSS/画像など）
   event.respondWith(
     caches.open(CACHE_NAME).then(cache => {
       return cache.match(event.request).then(response => {
@@ -67,7 +78,7 @@ self.addEventListener('fetch', event => {
           cache.put(event.request, responseToCache);
           return networkResponse;
         }).catch(err => {
-          console.error('Fetch failed; returning offline fallback if available.', err);
+          console.error('Fetch failed:', err);
           return caches.match(self.location.origin + '/camera/index.html');
         });
       });
