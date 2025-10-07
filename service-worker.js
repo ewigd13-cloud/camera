@@ -47,16 +47,14 @@ self.addEventListener('fetch', event => {
 
   // ページ遷移（navigate）は index.html を返す
   if (event.request.mode === 'navigate') {
-    event.respondWith(
-      caches.match(self.location.origin + '/camera/index.html')
-        .then(response => response || fetch(event.request))
-        .catch(err => {
-          console.error('Navigation fetch failed:', err);
-          return caches.match(self.location.origin + '/camera/index.html');
-        })
-    );
-    return;
-  }
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      return response || caches.match(self.location.origin + '/camera/');
+    }).catch(() => caches.match(self.location.origin + '/camera/'))
+  );
+  return;
+}
+
 
   // 通常のリソース取得（JS/CSS/画像など）
   event.respondWith(
