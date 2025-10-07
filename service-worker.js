@@ -49,11 +49,6 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
-  // ✅ 不要な外部API呼び出しを無視（ip2location系）
-  if (event.request.url.includes('ip2location-mcc.com')) {
-    return;
-  }
-
   // ページ遷移時は index.html を返す
   if (event.request.mode === 'navigate') {
     event.respondWith(
