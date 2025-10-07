@@ -93,8 +93,10 @@ self.addEventListener('fetch', event => {
             return new Response('', { status: 404 });
           }
 
-          return caches.match(self.location.origin + '/camera/index.html');
-        });
+          return caches.match(event.request).then(fallback => {
+           return fallback || caches.match(self.location.origin + '/camera/index.html');
+         });
+
       });
     })
   );
