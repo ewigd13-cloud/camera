@@ -76,10 +76,13 @@ self.addEventListener('fetch', event => {
           cache.put(event.request, responseToCache);
           return networkResponse;
         }).catch(err => {
-          console.error('Fetch failed:', err);
-          return caches.match(self.location.origin + '/camera/');
-        });
-      });
-    })
-  );
+  console.error('Fetch failed:', err);
+  return caches.match(self.location.origin + '/camera/').then(fallback => {
+    if (fallback) return fallback;
+    return new Response('Offline fallback', {
+      status: 408,
+      statusText: 'Network error',
+      headers: { 'Content-Type': 'text/plain' },
+    });
+  });
 });
