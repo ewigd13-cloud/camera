@@ -2,8 +2,8 @@ const CACHE_NAME = 'whiteboard-photo-booth-v2';
 const urlsToCache = [
   self.location.origin + '/camera/',
   self.location.origin + '/camera/manifest.json',
-  self.location.origin + '/camera/assets/index-BvRRQriq.js',
-  self.location.origin + '/camera/assets/index-CqfW5-qc.css',
+  self.location.origin + '/camera/assets/index-Cj2dIpUM.js',
+  self.location.origin + '/camera/assets/index-BOLNtf3m.css',
   self.location.origin + '/camera/icons/icon-192.png',
   self.location.origin + '/camera/icons/icon-512.png',
   self.location.origin + '/camera/fonts/NotoSerifJP-VariableFont_wght.ttf', // ← ローカルフォント
