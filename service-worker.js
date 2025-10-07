@@ -7,7 +7,7 @@ const urlsToCache = [
   self.location.origin + '/camera/assets/index-CTSoWR9A.css',
   self.location.origin + '/camera/icons/icon-192.png',
   self.location.origin + '/camera/icons/icon-512.png',
-  'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap',
+  // Google Fonts は CORS制限や no-store の可能性があるため除外
 ];
 
 // インストール時にキャッシュ登録
@@ -18,6 +18,9 @@ self.addEventListener('install', event => {
       .then(cache => {
         console.log('Opened cache');
         return cache.addAll(urlsToCache);
+      })
+      .then(() => {
+        console.log('Cache addAll succeeded');
       })
       .catch(err => {
         console.error('Cache addAll failed:', err);
@@ -42,11 +45,11 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// フェッチ時の分岐：navigateは index.html、それ以外はキャッシュ優先
+// フェッチ時の分岐：navigateは index.html、それ以外はキャッシュ優先＋精密なフォールバック
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
-  // ページ遷移（navigate）は index.html を返す
+  // ページ遷移時は index.html を返す
   if (event.request.mode === 'navigate') {
     event.respondWith(
       caches.match(self.location.origin + '/camera/index.html')
@@ -79,6 +82,12 @@ self.addEventListener('fetch', event => {
           return networkResponse;
         }).catch(err => {
           console.error('Fetch failed:', err);
+
+          // destination による精密な分岐
+          if (['script', 'style', 'image', 'font'].includes(event.request.destination)) {
+            return new Response('', { status: 404 });
+          }
+
           return caches.match(self.location.origin + '/camera/index.html');
         });
       });
