@@ -8,7 +8,6 @@
     <link rel="manifest" href="/camera/manifest.json" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>" />
     <script src="https://cdn.tailwindcss.com"></script>
-
     <style>
       @font-face {
         font-family: 'Noto Serif JP';
@@ -17,22 +16,21 @@
         font-style: normal;
       }
 
-      html, body {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+      body {
         font-family: 'Noto Serif JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         background-color: #f9f9f9;
         color: #333;
         line-height: 1.6;
-        min-height: 100dvh;
+        height: 100vh;
         width: 100vw;
-        overflow-y: auto;
+        overflow-y: auto;      /* ← ここが重要 */
         overflow-x: hidden;
+        margin: 0;
+        padding: 0;
       }
 
       #root {
-        min-height: 100dvh;
+        height: 100vh;
         width: 100vw;
       }
 
@@ -56,33 +54,13 @@
         pointer-events: none;
         opacity: 0.8;
       }
-
-      /* ✅ カメラ映像部のスタイル */
-      .camera-view {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  display: block;
-  margin: 0 auto;
-}
-
-/* 横画面時のみ縮小 */
-@media screen and (orientation: landscape) {
-  .camera-view {
-    transform: scale(0.85);
-    transform-origin: center center;
-  }
-}
     </style>
   </head>
-
   <body>
-    <div id="root">
-      <!-- ✅ 映像部にクラスを付与 -->
-      <video class="camera-view" autoplay playsinline muted></video>
-    </div>
+    <div id="root"></div>
 
     <script type="module" src="/src/index.tsx"></script>
+
 
     <script>
       if ('serviceWorker' in navigator) {
