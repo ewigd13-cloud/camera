@@ -1,6 +1,6 @@
 const CACHE_NAME = 'whiteboard-photo-booth-v3'; // ← v2 → v3 に更新
 const urlsToCache = [
-  self.location.origin + '/camera/index.html', // ← 明示的に追加
+  self.location.origin + '/camera/', // ← 明示的に追加
   self.location.origin + '/camera/manifest.json',
   self.location.origin + '/camera/assets/index-D8TP6Foz.js',
   self.location.origin + '/camera/assets/index-Dum9Q8-z.css',
@@ -41,9 +41,9 @@ self.addEventListener('fetch', event => {
   // ページ遷移（navigate）は index.html を返す
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      caches.match(self.location.origin + '/camera/index.html').then(response => {
+      caches.match(self.location.origin + '/camera/').then(response => {
         return response || fetch(event.request);
-      }).catch(() => caches.match(self.location.origin + '/camera/index.html'))
+      }).catch(() => caches.match(self.location.origin + '/camera/'))
     );
     return;
   }
@@ -68,7 +68,7 @@ self.addEventListener('fetch', event => {
           return networkResponse;
         }).catch(err => {
           console.error('❌ Fetch failed:', err);
-          return caches.match(self.location.origin + '/camera/index.html');
+          return caches.match(self.location.origin + '/camera/');
         });
       });
     })
