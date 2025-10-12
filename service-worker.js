@@ -1,6 +1,7 @@
 const CACHE_NAME = 'photo-booth-v1';
 const urlsToCache = [
   '/camera/',
+  '/camera/index.html', 
   '/camera/manifest.json',
   '/camera/assets/index-D8TP6Foz.js', // ← Viteの出力に合わせて更新
   '/camera/assets/index-Dum9Q8-z.css',
