@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Whiteboard Photo Booth</title>
+    <meta name="theme-color" content="#4a5568" />
+    <link rel="manifest" href="/camera/manifest.json" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @font-face {
+        font-family: 'Noto Serif JP';
+        src: url('/camera/fonts/NotoSerifJP-VariableFont_wght.ttf') format('truetype');
+        font-weight: 400 900;
+        font-style: normal;
+      }
+
+      body {
+        font-family: 'Noto Serif JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+        line-height: 1.6;
+        height: 100vh;
+        width: 100vw;
+        overflow-y: auto;      /* ← ここが重要 */
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+      }
+
+      #root {
+        height: 100vh;
+        width: 100vw;
+      }
+
+      .font-marker {
+        font-weight: 900;
+      }
+
+      .countdown-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 15rem;
+        font-weight: 700;
+        font-family: sans-serif;
+        -webkit-text-stroke: 4px black;
+        text-stroke: 4px black;
+        z-index: 10;
+        pointer-events: none;
+        opacity: 0.8;
+      }
+    </style>
+    <script type="module" crossorigin src="/camera/assets/index-D8TP6Foz.js"></script>
+    <link rel="stylesheet" crossorigin href="/camera/assets/index-Dum9Q8-z.css">
+  <link rel="manifest" href="/camera/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/camera/registerSW.js"></script></head>
+  <body>
+    <div id="root"></div>
+
+
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/camera/service-worker.js')
+            .then(reg => console.log('SW registered:', reg.scope))
+            .catch(err => console.error('SW registration failed:', err));
+        });
+      }
+    </script>
+  </body>
+</html>
