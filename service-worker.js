@@ -1,14 +1,13 @@
-const CACHE_NAME = 'whiteboard-photo-booth-v2';
+const CACHE_NAME = 'whiteboard-photo-booth-test-v1';
 const urlsToCache = [
-  self.location.origin + '/camera/',
-  self.location.origin + '/camera/manifest.json',
-  self.location.origin + '/camera/assets/index-D8TP6Foz.js',
-  self.location.origin + '/camera/assets/index-Dum9Q8-z.css',
-  self.location.origin + '/camera/icons/icon-192.png',
-  self.location.origin + '/camera/icons/icon-512.png',
-  self.location.origin + '/camera/fonts/NotoSerifJP-VariableFont_wght.ttf', // ← ローカルフォント
+  self.location.origin + '/camera-test/',
+  self.location.origin + '/camera-test/manifest.json',
+  self.location.origin + '/camera-test/assets/index-tnrYw67E.js',
+  self.location.origin + '/camera-test/assets/index-DgIfnjQ_.css',
+  self.location.origin + '/camera-test/icons/icon-192.png',
+  self.location.origin + '/camera-test/icons/icon-512.png',
+  self.location.origin + '/camera-test/fonts/NotoSerifJP-VariableFont_wght.ttf',
 ];
-
 
 // インストール時にキャッシュ登録
 self.addEventListener('install', event => {
@@ -29,27 +28,32 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
+    caches.keys().then(cacheNames =>
+      Promise.all(
         cacheNames.map(cacheName => {
           if (!cacheWhitelist.includes(cacheName)) {
             return caches.delete(cacheName);
           }
         })
-      );
-    })
+      )
+    )
   );
   self.clients.claim();
 });
 
-// フェッチ時の分岐：navigateは index.html、それ以外はキャッシュ優先
+// フェッチ時の分岐：navigateは index.html、それ以外はキャッシュ優先＋保存
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
+  // ページ遷移（navigate）は index.html を返す
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request).catch(() =>
-        caches.match(self.location.origin + '/camera/')
+        caches.match(event.request).then(response => {
+          return response ||
+                 caches.match(self.location.origin + '/camera-test/') ||
+                 caches.match(self.location.origin + '/camera-test/index.html');
+        })
       )
     );
     return;
@@ -68,11 +72,16 @@ self.addEventListener('fetch', event => {
             !['basic', 'cors'].includes(networkResponse.type)
           ) return networkResponse;
 
-          const responseToCache = networkResponse.clone();
-          cache.put(event.request, responseToCache);
+          // 拡張子で保存対象を制限（容量対策）
+          const cacheableExtensions = /\.(js|css|ttf|png|jpg|jpeg|svg|webp)$/;
+          if (cacheableExtensions.test(event.request.url)) {
+            const responseToCache = networkResponse.clone();
+            cache.put(event.request, responseToCache);
+          }
+
           return networkResponse;
         }).catch(() =>
-          caches.match(self.location.origin + '/camera/')
+          caches.match(self.location.origin + '/camera-test/')
         );
       })
     )
