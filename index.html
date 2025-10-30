@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Whiteboard Photo Booth</title>
+    <title>Whiteboard Photo Booth (Test)</title>
     <meta name="theme-color" content="#4a5568" />
-    <link rel="manifest" href="/camera/manifest.json" />
+    <link rel="manifest" href="/camera-test/manifest.webmanifest" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📸</text></svg>" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @font-face {
         font-family: 'Noto Serif JP';
-        src: url('/camera/fonts/NotoSerifJP-VariableFont_wght.ttf') format('truetype');
+        src: url('/camera-test/fonts/NotoSerifJP-VariableFont_wght.ttf') format('truetype');
         font-weight: 400 900;
         font-style: normal;
       }
@@ -23,7 +23,7 @@
         line-height: 1.6;
         height: 100vh;
         width: 100vw;
-        overflow-y: auto;      /* ← ここが重要 */
+        overflow-y: auto;
         overflow-x: hidden;
         margin: 0;
         padding: 0;
@@ -55,18 +55,17 @@
         opacity: 0.8;
       }
     </style>
-    <script type="module" crossorigin src="/camera/assets/index-D8TP6Foz.js"></script>
-    <link rel="stylesheet" crossorigin href="/camera/assets/index-Dum9Q8-z.css">
-  <link rel="manifest" href="/camera/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/camera/registerSW.js"></script></head>
+    <script type="module" crossorigin src="/camera-test/assets/index-kkhXQTqV.js"></script>
+    <link rel="stylesheet" crossorigin href="/camera-test/assets/index-yZjIh5FW.css">
+  <link rel="manifest" href="/camera-test/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/camera-test/registerSW.js"></script></head>
   <body>
     <div id="root"></div>
 
 
-
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/camera/service-worker.js')
+          navigator.serviceWorker.register('/camera-test/sw.js')
             .then(reg => console.log('SW registered:', reg.scope))
             .catch(err => console.error('SW registration failed:', err));
         });
