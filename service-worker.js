@@ -1,4 +1,4 @@
-const CACHE_NAME = 'whiteboard-photo-booth-test-v1';
+const CACHE_NAME = 'whiteboard-photo-booth-test-v3';
 const urlsToCache = [
   self.location.origin + '/camera-test/',
   self.location.origin + '/camera-test/manifest.json',
