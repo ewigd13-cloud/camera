@@ -1,12 +1,12 @@
 const CACHE_NAME = 'whiteboard-photo-booth-test-v3';
 const urlsToCache = [
-  self.location.origin + '/camera-test/',
-  self.location.origin + '/camera-test/manifest.json',
-  self.location.origin + '/camera-test/assets/index-Dksi9Qxk.js',
-  self.location.origin + '/camera-test/assets/index-B4Kve_FD.css',
-  self.location.origin + '/camera-test/icons/icon-192.png',
-  self.location.origin + '/camera-test/icons/icon-512.png',
-  self.location.origin + '/camera-test/fonts/NotoSerifJP-VariableFont_wght.ttf',
+  self.location.origin + '/camera-stock/',
+  self.location.origin + '/camera-stock/manifest.json',
+  self.location.origin + '/camera-stock/assets/index-BZ8vKjdw.js',
+  self.location.origin + '/camera-stock/assets/index-_rSp700L.css',
+  self.location.origin + '/camera-stock/icons/icon-192.png',
+  self.location.origin + '/camera-stock/icons/icon-512.png',
+  self.location.origin + '/camera-stock/fonts/NotoSerifJP-VariableFont_wght.ttf',
 ];
 
 // インストール時にキャッシュ登録
@@ -51,8 +51,8 @@ self.addEventListener('fetch', event => {
       fetch(event.request).catch(() =>
         caches.match(event.request).then(response => {
           return response ||
-                 caches.match(self.location.origin + '/camera-test/') ||
-                 caches.match(self.location.origin + '/camera-test/index.html');
+                 caches.match(self.location.origin + '/camera-stock/') ||
+                 caches.match(self.location.origin + '/camera-stock/index.html');
         })
       )
     );
@@ -81,7 +81,7 @@ self.addEventListener('fetch', event => {
 
           return networkResponse;
         }).catch(() =>
-          caches.match(self.location.origin + '/camera-test/')
+          caches.match(self.location.origin + '/camera-stock/')
         );
       })
     )
